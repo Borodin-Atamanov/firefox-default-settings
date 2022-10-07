@@ -1,0 +1,4 @@
+services.addons.mozilla.org:HSTS	0	19272	1696704206511,1,0,2
+addons.mozilla.org^partitionKey=%28http%2Cmozilla.org%29:HSTS	0	19272	1696704211373,1,1,2
+addons.mozilla.org:HSTS	0	19272	1696704177088,1,0,2
+firefox.settings.services.mozilla.com:HSTS	0	19272	1696705417219,1,0,2
