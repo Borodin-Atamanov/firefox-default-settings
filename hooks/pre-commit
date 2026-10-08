@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Pretty-prints any staged JSON file and stages it again.
+set -u
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "pre-commit: python3 is required" >&2
+  exit 1
+fi
+changed=0
+while IFS= read -r file; do
+  case "$file" in
+    *.json) ;;
+    *) continue ;;
+  esac
+  python3 - "$file" <<'PY'
+import json, sys
+path = sys.argv[1]
+with open(path, encoding="utf-8") as handle:
+    value = json.load(handle)
+formatted = json.dumps(value, indent=2, ensure_ascii=False) + "\n"
+with open(path, "w", encoding="utf-8") as handle:
+    handle.write(formatted)
+PY
+  git add -- "$file"
+  changed=1
+done < <(git diff --cached --name-only --diff-filter=ACM)
+exit 0
